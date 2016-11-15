@@ -55,5 +55,5 @@ if (BUILD_LCM)
     COMMAND rm -f ${LCM_DIR}/BUILT_FLAG
     COMMAND cmake ..
     )
-  add_dependencies (clean clean-lcm)
+  add_dependencies (cleanup clean-lcm)
 endif (BUILD_LCM)

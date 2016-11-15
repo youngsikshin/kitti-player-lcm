@@ -29,7 +29,7 @@ add_custom_target (third-party ALL
 add_custom_target (uninstall
   COMMAND cmake ..
   )
-add_custom_target (clean
+add_custom_target (cleanup
   COMMAND cmake ..
   )
 
