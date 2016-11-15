@@ -14,8 +14,8 @@ set(CMAKE_AUTOMOC ON)
 
 FIND_PACKAGE(Qt5 QUIET COMPONENTS Core Xml OpenGL Gui Widgets)
 
-set (QtKitti_CPP window.cpp myglwidget.cpp)
-set (QtKitti_HEADER window.h myglwidget.h)
+set (QtKitti_CPP window.cpp myglwidget.cpp KittiData.cpp)
+set (QtKitti_HEADER window.h myglwidget.h KittiData.h)
 set (QtKitti_UI  window.ui)
 set (QtKitti_MAIN main.cpp)
 

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSlider>
+#include <QTimer>
 
 namespace Ui {
 class window;
@@ -19,8 +20,16 @@ public:
 protected:
     void keyPressEvent(QKeyEvent *event);
 
+private slots:
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_startButton_clicked();
+
+    void onTimer();
+
 private:
     Ui::window *ui;
+    QTimer *_timer;
 };
 
 #endif // WINDOW_H
