@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(POD_NAME naver)
+set(POD_NAME kitti-player)
 
 # CMAKE TWEAKS
 #========================================================================
