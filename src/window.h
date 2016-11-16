@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QSlider>
 #include <QTimer>
+#include <QPixmap>
+#include "KittiData.h"
 
 namespace Ui {
 class window;
@@ -27,9 +29,25 @@ private slots:
 
     void onTimer();
 
+    void on_stopButton_clicked();
+
 private:
+    KittiData kittiData;
     Ui::window *ui;
     QTimer *_timer;
+
+    QString leftImgPath;
+    QString rightImgPath;
+    QString velodynePath;
+
+    int delay_msec;
+    QPixmap leftImg;
+    QPixmap rightImg;
+    int i=0;
+
+    void init_index();
+    void load_data();
+
 };
 
 #endif // WINDOW_H

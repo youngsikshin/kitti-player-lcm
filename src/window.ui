@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>728</width>
-    <height>470</height>
+    <width>934</width>
+    <height>591</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,14 +22,32 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="spacing">
-        <number>20</number>
+        <number>5</number>
        </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QLabel" name="leftcamLabel">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rightcamLabel">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
        <item>
         <widget class="MyGLWidget" name="myGLWidget" native="true">
          <property name="minimumSize">
           <size>
-           <width>449</width>
-           <height>280</height>
+           <width>800</width>
+           <height>300</height>
           </size>
          </property>
         </widget>
@@ -155,6 +173,12 @@
      </item>
      <item>
       <widget class="Line" name="line">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -241,7 +265,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="stopButton">
            <property name="text">
             <string>Stop</string>
            </property>

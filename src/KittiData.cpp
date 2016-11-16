@@ -2,6 +2,7 @@
 
 #include <QDir>
 #include <QTextStream>
+#include <QDataStream>
 #include "KittiData.h"
 
 KittiData::KittiData()
@@ -11,9 +12,13 @@ KittiData::KittiData()
 
 KittiData::KittiData(QString path)
 {
-    _flistLeftImg = get_filelist(path+"image_0", "*.png");
-    _flistRightImg = get_filelist(path+"image_1","*.png");
-    _flistVelodyne = get_filelist(path+"velodyne","*.bin");
+    _leftImgPath = path+"image_0";
+    _rightImgPath = path+"image_1";
+    _velodynePath = path+"velodyne";
+
+    _flistLeftImg = get_filelist(_leftImgPath, "*.png");
+    _flistRightImg = get_filelist(_rightImgPath,"*.png");
+    _flistVelodyne = get_filelist(_velodynePath,"*.bin");
 
     QFile _ftimes(path+"times.txt");
     if (!_ftimes.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -50,5 +55,21 @@ void KittiData::print_filelist(const QFileInfoList flist)
         QFileInfo fi = flist.at(i);
         if (fi.isFile())
             std::cout << fi.fileName().toStdString() << std::endl;
+    }
+}
+
+void KittiData::read_velodyne(QString fname)
+{
+    QFile velodyne_file(fname);
+    if (!velodyne_file.open(QIODevice::ReadOnly))
+        return;
+
+    QDataStream in(&velodyne_file);
+    while(!in.atEnd()) {
+        in.setByteOrder(QDataStream::LittleEndian);
+        in.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        float x, y, z, r;
+        in >> x >> y >> z >> r;
+//        std::cout << x << ", " << y << ", " << z << ", " << r << std::endl;
     }
 }

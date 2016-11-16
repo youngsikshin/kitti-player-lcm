@@ -1,4 +1,5 @@
 #include <QtWidgets>
+#include <QElapsedTimer>
 #include <QTimer>
 #include "window.h"
 #include "ui_window.h"
@@ -43,10 +44,50 @@ void window::on_comboBox_currentIndexChanged(int index)
 
 void window::on_startButton_clicked()
 {
-    KittiData(QString("/var/data/kitti/dataset/sequences/00/"));
+    QString seqPath = "/var/data/kitti/dataset/sequences/00/";
+    kittiData = KittiData(seqPath);
+
+    ui->lineEdit->setText("Image path: " + leftImgPath);
+
+    load_data();
 }
 
 void window::onTimer()
 {
-    ui->lineEdit->setText("onTimer");
+    ui->lineEdit->setText("Image path: " + leftImgPath);
+
+    load_data();
+}
+
+void window::on_stopButton_clicked()
+{
+    init_index();
+    _timer->stop();
+}
+
+void window::init_index()
+{
+    i = 0;
+}
+
+void window::load_data()
+{
+    QElapsedTimer timer;
+    timer.start();
+    leftImgPath = kittiData.get_left_img(i);
+    rightImgPath = kittiData.get_right_img(i);
+    velodynePath = kittiData.get_velodyne(i);
+
+    delay_msec = static_cast<int> (kittiData.get_time_diff(i)*1000);
+
+    i++;
+
+    leftImg = QPixmap(leftImgPath);
+    rightImg = QPixmap(rightImgPath);
+
+    ui->leftcamLabel->setPixmap(leftImg.scaledToWidth(ui->leftcamLabel->width()));
+    ui->rightcamLabel->setPixmap(rightImg.scaledToWidth(ui->rightcamLabel->width()));
+    KittiData::read_velodyne(velodynePath);
+
+    _timer->start(delay_msec-timer.elapsed());
 }
