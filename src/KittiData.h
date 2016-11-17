@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QFileInfoList>
 #include <QVector>
+#include <QtOpenGL>
 
 class KittiData
 {
@@ -17,7 +18,10 @@ public:
     QString get_velodyne(int i) { return _flistVelodyne.at(i).absoluteFilePath();}
     double get_time_diff(int i) { return _times[i+1]-_times[i]; }
 
-    static void read_velodyne(QString fname);
+    void read_velodyne(QString fname);
+
+    QVector<GLfloat> _velodyneData;
+    QVector<GLfloat> _velodyneReflectance;
 
 private:
     QString _leftImgPath;

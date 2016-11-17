@@ -22,6 +22,7 @@ set (QtKitti_MAIN main.cpp)
 if(Qt5_FOUND)
   QT5_WRAP_UI(UI_HEADERS ${QtKitti_UI})
   QT5_WRAP_CPP(UI_SOURCES ${QtKitti_HEADER})
+  QT5_ADD_RESOURCES(SHADER_RSC_ADDED resources.qrc)
 
   include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS}
 )
@@ -36,7 +37,7 @@ add_library(QtKitti_library
   ${UI_HEADERS} ${UI_SOURCES}
 )
 
-add_executable(kitti-player ${QtKitti_MAIN})
+add_executable(kitti-player ${QtKitti_MAIN} ${SHADER_RSC_ADDED})
 
 target_link_libraries(QtKitti_library ${QGLVIEWER_LIBRARY} ${QtKitti_LIBRARIES} ${OPENGL_LIBRARY})
 target_link_libraries(kitti-player QtKitti_library)

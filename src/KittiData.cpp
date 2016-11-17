@@ -65,11 +65,21 @@ void KittiData::read_velodyne(QString fname)
         return;
 
     QDataStream in(&velodyne_file);
+    _velodyneData.clear();
+    _velodyneReflectance.clear();
+
     while(!in.atEnd()) {
         in.setByteOrder(QDataStream::LittleEndian);
         in.setFloatingPointPrecision(QDataStream::SinglePrecision);
         float x, y, z, r;
         in >> x >> y >> z >> r;
+        _velodyneData.push_back(x);
+        _velodyneData.push_back(y);
+        _velodyneData.push_back(z);
+        _velodyneReflectance.push_back(r);
+        _velodyneReflectance.push_back(r);
+        _velodyneReflectance.push_back(r);
+
 //        std::cout << x << ", " << y << ", " << z << ", " << r << std::endl;
     }
 }
