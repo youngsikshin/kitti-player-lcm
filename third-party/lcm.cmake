@@ -8,8 +8,8 @@ if (BUILD_LCM)
   # TARGETS
   #set (LCM_SRC "${THIRD_PARTY_DIR}/lcm")
   #set (LCM_DIR "lcm")
-  set (LCM_SRC "${THIRD_PARTY_DIR}/lcm-1.3.1.zip")
-  set (LCM_DIR "lcm-1.3.1")
+  set (LCM_SRC "${THIRD_PARTY_DIR}/lcm-1.1.1.tar.gz")
+  set (LCM_DIR "lcm-1.1.1")
 
   add_custom_target (lcm
     COMMAND rm -f ${LCM_DIR}/BUILT_FLAG
@@ -28,8 +28,8 @@ if (BUILD_LCM)
       # COMMAND cmake ..
 
       COMMAND mkdir -p ${LCM_DIR}
-      COMMAND unzip ${LCM_SRC}
-      #COMMAND tar zxvfp  ${LCM_SRC} -C ${LCM_DIR} --strip 1
+      #COMMAND unzip ${LCM_SRC}
+      COMMAND tar zxvfp  ${LCM_SRC} -C ${LCM_DIR} --strip 1
       COMMAND cd ${LCM_DIR} && pwd && ./configure
       COMMAND make -C ${LCM_DIR} -j
       COMMAND sudo make -C ${LCM_DIR} install
