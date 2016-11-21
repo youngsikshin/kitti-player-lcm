@@ -22,6 +22,8 @@ public:
 
     QVector<GLfloat> _velodyneData;
     QVector<GLfloat> _velodyneReflectance;
+    QImage _leftImg;
+    QImage _rightImg;
 
 private:
     QString _leftImgPath;

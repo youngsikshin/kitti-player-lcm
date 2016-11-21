@@ -5,7 +5,9 @@
 #include <QSlider>
 #include <QTimer>
 #include <QPixmap>
+#include <QMutex>
 #include "KittiData.h"
+#include "LCMThread.h"
 
 namespace Ui {
 class window;
@@ -18,6 +20,9 @@ class window : public QWidget
 public:
     explicit window(QWidget *parent = 0);
     ~window();
+    LCMThread *lcmThread;
+
+    QMutex mutex;
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -36,6 +41,8 @@ private:
     Ui::window *ui;
     QTimer *_timer;
 
+    QString strSeq;
+
     QString leftImgPath;
     QString rightImgPath;
     QString velodynePath;
@@ -47,6 +54,8 @@ private:
 
     void init_index();
     void load_data();
+
+    void clear_left_img123();
 
 };
 
