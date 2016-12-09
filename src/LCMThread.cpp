@@ -28,7 +28,7 @@ void LCMThread::pub_left_img()
 
 void LCMThread::pub_right_img()
 {
-    QImage_to_bot_image_t(leftImg, right_bot_img);
+    QImage_to_bot_image_t(rightImg, right_bot_img);
     _lcm.publish("RIGHT_IMG_T",&right_bot_img);
     clear_right_img();
 }
