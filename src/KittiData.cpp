@@ -3,6 +3,8 @@
 #include <QDir>
 #include <QTextStream>
 #include <QDataStream>
+
+#include <QDebug>
 #include "KittiData.h"
 
 KittiData::KittiData()
@@ -72,6 +74,8 @@ void KittiData::read_velodyne(QString fname)
         in.setByteOrder(QDataStream::LittleEndian);
         in.setFloatingPointPrecision(QDataStream::SinglePrecision);
         float x, y, z, r;
+//        double angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180/M_PI;
+//        std::cout << floor(angle*2)/2 << ", ";
         in >> x >> y >> z >> r;
         _velodyneData.push_back(x);
         _velodyneData.push_back(y);
@@ -82,4 +86,5 @@ void KittiData::read_velodyne(QString fname)
 
 //        std::cout << x << ", " << y << ", " << z << ", " << r << std::endl;
     }
+    std::cout << std::endl;
 }
