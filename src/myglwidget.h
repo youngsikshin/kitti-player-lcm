@@ -26,14 +26,12 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
-//    void keyPressEvent(QKeyEvent *event);
 
     void drawShader (QGLShaderProgram &shader, GLenum type, QMatrix4x4 T, QVector <QVector3D> data, Qt::GlobalColor color);
     void drawShader (QGLShaderProgram &shader, GLenum type, QMatrix4x4 T, QVector <QVector3D> data, QVector <QVector3D> data_color);
 //    void drawShaderBuffer (QGLShaderProgram &shader, GLenum type, QMatrix4x4 T);
 
     void drawShader(QGLShaderProgram &shader, GLenum type, QMatrix4x4 T, QVector<GLfloat> data, QVector<GLfloat> data_color, int stride);
-
 
 public:
     QVector <QVector3D> axes;

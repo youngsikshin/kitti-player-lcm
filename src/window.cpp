@@ -22,10 +22,6 @@ window::window(QWidget *parent) :
     connect(_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     _timer->stop();
 
-    connect(ui->myGLWidget, SIGNAL(xRotationChanged(int)), ui->rotXSlider, SLOT(setValue(int)));
-    connect(ui->myGLWidget, SIGNAL(yRotationChanged(int)), ui->rotYSlider, SLOT(setValue(int)));
-    connect(ui->myGLWidget, SIGNAL(zRotationChanged(int)), ui->rotZSlider, SLOT(setValue(int)));
-
 }
 
 window::~window()
