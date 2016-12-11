@@ -10,10 +10,11 @@
 #include <QVector3D>
 #include <QReadLocker>
 #include <QCanBusFrame>
+#include <QtOpenGL>
+
 #include <lcm/lcm-cpp.hpp>
 #include "lcmtypes++/bot_core/image_t.hpp"
-#include "lcmtypes++/irp_sen/cpc_t.hpp"
-#include "lcmtypes++/irp_sen/color_float_t.hpp"
+#include "lcmtypes++/irp_sen/lpc_t.hpp"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ public:
 
     QImage *leftImg;
     QImage *rightImg;
+    irp_sen::lpc_t *lpc;
 
     lcm::LCM _lcm;
     bot_core::image_t left_bot_img;
@@ -36,8 +38,11 @@ public:
 
     void set_left_img(QImage *img) { leftImg = img; }
     void set_right_img(QImage *img) { rightImg = img; }
+    void set_velodyne(QVector<GLfloat>& velodyneData, QVector<GLfloat>& velodyneReflectance);
+
     void pub_left_img();
     void pub_right_img();
+    void pub_velodyne();
 
 signals:
 
@@ -49,6 +54,7 @@ private:
 public slots:
     void clear_left_img();
     void clear_right_img();
+    void clear_lpc();
 
 };
 

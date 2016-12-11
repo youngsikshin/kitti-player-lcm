@@ -5,6 +5,7 @@
 #include <QFileInfoList>
 #include <QVector>
 #include <QtOpenGL>
+#include <vector>
 
 class KittiData
 {
@@ -22,6 +23,7 @@ public:
 
     QVector<GLfloat> _velodyneData;
     QVector<GLfloat> _velodyneReflectance;
+
     QImage _leftImg;
     QImage _rightImg;
 

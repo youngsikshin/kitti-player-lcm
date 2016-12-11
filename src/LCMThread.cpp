@@ -12,11 +12,33 @@ LCMThread::LCMThread(QObject *parent, QMutex *th_mutex) :
 {
     leftImg = new QImage();
     rightImg = new QImage();
+    lpc = new irp_sen::lpc_t();
 
     timestamp = QCanBusFrame::TimeStamp(0, 100);
 
     if(!_lcm.good())
         return;
+}
+
+void LCMThread::set_velodyne(QVector<GLfloat>& velodyneData, QVector<GLfloat>& velodyneReflectance)
+{
+    std::chrono::system_clock::time_point now = std::chrono::high_resolution_clock::now();
+    std::chrono::system_clock::duration duration_now = now.time_since_epoch();
+
+    lpc->utime = std::chrono::duration_cast<std::chrono::microseconds>(duration_now).count();
+
+    lpc->n = velodyneReflectance.size();
+    lpc->x.reserve(lpc->n);
+    lpc->y.reserve(lpc->n);
+    lpc->z.reserve(lpc->n);
+    lpc->intensity.reserve(lpc->n);
+
+    for (int i=0; i < velodyneData.size(); i=i+3) {
+        lpc->x.push_back(velodyneData[i]);
+        lpc->y.push_back(velodyneData[i+1]);
+        lpc->z.push_back(velodyneData[i+2]);
+        lpc->intensity.push_back(static_cast<int> (velodyneReflectance[i]*255));
+    }
 }
 
 void LCMThread::pub_left_img()
@@ -33,6 +55,12 @@ void LCMThread::pub_right_img()
     clear_right_img();
 }
 
+void LCMThread::pub_velodyne()
+{
+    _lcm.publish("VELODYNE_LPC_T", lpc);
+    clear_lpc();
+}
+
 void LCMThread::clear_left_img()
 {
     left_bot_img.data.clear();
@@ -41,6 +69,16 @@ void LCMThread::clear_left_img()
 void LCMThread::clear_right_img()
 {
     right_bot_img.data.clear();
+}
+
+void LCMThread::clear_lpc()
+{
+    lpc->utime = 0;
+    lpc->n = 0;
+    lpc->x.clear();
+    lpc->y.clear();
+    lpc->z.clear();
+    lpc->intensity.clear();
 }
 
 void LCMThread::QImage_to_bot_image_t(const QImage* qimg,bot_core::image_t &img_t)
@@ -105,4 +143,5 @@ void LCMThread::run()
 {
     pub_left_img();
     pub_right_img();
+    pub_velodyne();
 }

@@ -98,18 +98,21 @@ void window::load_data()
     leftImg.convertFromImage(kittiData._leftImg);
     rightImg.convertFromImage(kittiData._rightImg);
 
-    lcmThread->set_left_img(&kittiData._leftImg);
-    lcmThread->set_right_img(&kittiData._rightImg);
-    lcmThread->start();
-
     ui->leftcamLabel->setPixmap(leftImg.scaledToWidth(ui->leftcamLabel->width()));
     ui->rightcamLabel->setPixmap(rightImg.scaledToWidth(ui->rightcamLabel->width()));
 
+    // Read velodyne data
+    kittiData.read_velodyne(velodynePath);
+
     if(ui->vlpCheckBox->isChecked()) {
-        kittiData.read_velodyne(velodynePath);
         this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
         this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
     }
+
+    lcmThread->set_left_img(&kittiData._leftImg);
+    lcmThread->set_right_img(&kittiData._rightImg);
+    lcmThread->set_velodyne(kittiData._velodyneData, kittiData._velodyneReflectance);
+    lcmThread->start();
 
 //    _timer->start(delay_msec-timer.elapsed());
     this->ui->myGLWidget->update();
