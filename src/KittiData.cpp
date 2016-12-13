@@ -74,8 +74,8 @@ void KittiData::read_velodyne(QString fname)
         in.setByteOrder(QDataStream::LittleEndian);
         in.setFloatingPointPrecision(QDataStream::SinglePrecision);
         float x, y, z, r;
-//        double angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180/M_PI;
-//        std::cout << floor(angle*2)/2 << ", ";
+        float angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180/M_PI;
+        std::cout << floor(angle*1000+0.5)/1000 << ", ";
         in >> x >> y >> z >> r;
         _velodyneData.push_back(x);
         _velodyneData.push_back(y);
