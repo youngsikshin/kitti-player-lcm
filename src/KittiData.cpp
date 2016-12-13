@@ -86,5 +86,5 @@ void KittiData::read_velodyne(QString fname)
 
 //        std::cout << x << ", " << y << ", " << z << ", " << r << std::endl;
     }
-    std::cout << std::endl;
+//    std::cout << std::endl;
 }

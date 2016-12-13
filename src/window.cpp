@@ -86,7 +86,7 @@ void window::load_data()
     rightImgPath = kittiData.get_right_img(i);
     velodynePath = kittiData.get_velodyne(i);
 
-    delay_msec = static_cast<int> (kittiData.get_time_diff(i)*1000);
+    delay_msec = static_cast<int> (kittiData.get_time_diff(i)*1000*3);
     _timer->start(delay_msec);
 
 

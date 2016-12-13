@@ -27,16 +27,16 @@ void LCMThread::set_velodyne(QVector<GLfloat>& velodyneData, QVector<GLfloat>& v
 
     lpc->utime = std::chrono::duration_cast<std::chrono::microseconds>(duration_now).count();
 
-    lpc->n = velodyneReflectance.size();
+    lpc->n = static_cast<int> (velodyneReflectance.size()/3);
     lpc->x.reserve(lpc->n);
     lpc->y.reserve(lpc->n);
     lpc->z.reserve(lpc->n);
     lpc->intensity.reserve(lpc->n);
 
     for (int i=0; i < velodyneData.size(); i=i+3) {
-        lpc->x.push_back(velodyneData[i]);
-        lpc->y.push_back(velodyneData[i+1]);
-        lpc->z.push_back(velodyneData[i+2]);
+        lpc->x.push_back(static_cast<float> (velodyneData[i]));
+        lpc->y.push_back(static_cast<float> (velodyneData[i+1]));
+        lpc->z.push_back(static_cast<float> (velodyneData[i+2]));
         lpc->intensity.push_back(static_cast<int> (velodyneReflectance[i]*255));
     }
 }
