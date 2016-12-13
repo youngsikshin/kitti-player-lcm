@@ -51,12 +51,13 @@ QFileInfoList KittiData::get_filelist(const QString path, const QString name_fil
 
 void KittiData::print_filelist(const QFileInfoList flist)
 {
-    std::cout << "[KittiData]\t" << flist.size() << std::endl;
+//    std::cout << "[KittiData]\t" << flist.size() << std::endl;
     for (int i = 0; i < flist.size(); i++)
     {
         QFileInfo fi = flist.at(i);
-        if (fi.isFile())
-            std::cout << fi.fileName().toStdString() << std::endl;
+        if (fi.isFile()) {
+//            std::cout << fi.fileName().toStdString() << std::endl;
+        }
     }
 }
 
@@ -70,21 +71,41 @@ void KittiData::read_velodyne(QString fname)
     _velodyneData.clear();
     _velodyneReflectance.clear();
 
+    int cnt=0;
     while(!in.atEnd()) {
         in.setByteOrder(QDataStream::LittleEndian);
         in.setFloatingPointPrecision(QDataStream::SinglePrecision);
-        float x, y, z, r;
-        float angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180/M_PI;
-        std::cout << floor(angle*1000+0.5)/1000 << ", ";
+        double x, y, z, r;
+        double angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180.0/M_PI;
+//        std::cout << angle << std::endl;
+//        std::cout << floor(angle*10+0.5)/10 << std::endl;
         in >> x >> y >> z >> r;
+
         _velodyneData.push_back(x);
         _velodyneData.push_back(y);
         _velodyneData.push_back(z);
         _velodyneReflectance.push_back(r);
         _velodyneReflectance.push_back(r);
         _velodyneReflectance.push_back(r);
-
 //        std::cout << x << ", " << y << ", " << z << ", " << r << std::endl;
     }
+
+
+    int n_vl = _velodyneData.size();
+    int step = _velodyneData.size()/64;
+    tmpdata.clear();
+    tmpref.clear();
+
+    std::cout << n_vl << std::endl;
+    for(int i=0; i<64;i=i+4) {
+        for(int j=0; j<step; j++) {
+
+                tmpdata.push_back(_velodyneData[i*step+j]);
+                tmpref.push_back(_velodyneReflectance[i*step+j]);
+        }
+    }
+
+
+
 //    std::cout << std::endl;
 }

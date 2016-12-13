@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QVector>
 
 #include "window.h"
 #include "ui_window.h"
@@ -105,8 +106,12 @@ void window::load_data()
     kittiData.read_velodyne(velodynePath);
 
     if(ui->vlpCheckBox->isChecked()) {
-        this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
-        this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
+
+//        this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
+//        this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
+        this->ui->myGLWidget->_velodyneData = kittiData.tmpdata;
+        this->ui->myGLWidget->_velodyneReflectance = kittiData.tmpref;
+
     }
 
     lcmThread->set_left_img(&kittiData._leftImg);
