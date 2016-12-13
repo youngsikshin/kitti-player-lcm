@@ -36,6 +36,8 @@ private slots:
 
     void on_stopButton_clicked();
 
+    void on_stepButton_clicked();
+
 private:
     KittiData kittiData;
     Ui::window *ui;

@@ -148,13 +148,20 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="stopButton">
+          <widget class="QPushButton" name="stepButton">
            <property name="text">
-            <string>Stop</string>
+            <string>Step</string>
            </property>
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="stopButton">
+         <property name="text">
+          <string>Stop</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="vlpCheckBox">

@@ -23,6 +23,11 @@ window::window(QWidget *parent) :
     connect(_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     _timer->stop();
 
+    init_index();
+
+    strSeq = ui->comboBox->currentText();
+    QString seqPath = "/var/data/kitti/dataset/sequences/"+strSeq+"/";
+    kittiData = KittiData(seqPath);
 }
 
 window::~window()
@@ -48,14 +53,18 @@ void window::on_comboBox_currentIndexChanged(int index)
 {
     ui->lineEdit->setText("Sequence " + ui->comboBox->currentText() + ". ");
     strSeq = ui->comboBox->currentText();
+    QString seqPath = "/var/data/kitti/dataset/sequences/"+strSeq+"/";
+    kittiData = KittiData(seqPath);
+
+    init_index();
 }
 
 void window::on_startButton_clicked()
 {
-    QString seqPath = "/var/data/kitti/dataset/sequences/"+strSeq+"/";
-    kittiData = KittiData(seqPath);
-
     ui->lineEdit->setText("Image path: " + leftImgPath);
+
+    delay_msec = static_cast<int> (kittiData.get_time_diff(i)*1000);
+    _timer->start(delay_msec);
 
     load_data();
 }
@@ -69,7 +78,7 @@ void window::onTimer()
 
 void window::on_stopButton_clicked()
 {
-    init_index();
+//    init_index();
     _timer->stop();
 }
 
@@ -80,16 +89,15 @@ void window::init_index()
 
 void window::load_data()
 {
-    QElapsedTimer timer;
-    timer.start();
+//    QElapsedTimer timer;
+//    timer.start();
 
     leftImgPath = kittiData.get_left_img(i);
     rightImgPath = kittiData.get_right_img(i);
     velodynePath = kittiData.get_velodyne(i);
 
-    delay_msec = static_cast<int> (kittiData.get_time_diff(i)*1000*3);
-    _timer->start(delay_msec);
-
+//    delay_msec = static_cast<int> (kittiData.get_time_diff(i)*1000);
+//    _timer->start(delay_msec);
 
     i++;
 
@@ -107,10 +115,10 @@ void window::load_data()
 
     if(ui->vlpCheckBox->isChecked()) {
 
-//        this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
-//        this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
-        this->ui->myGLWidget->_velodyneData = kittiData.tmpdata;
-        this->ui->myGLWidget->_velodyneReflectance = kittiData.tmpref;
+        this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
+        this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
+//        this->ui->myGLWidget->_velodyneData = kittiData.tmpdata;
+//        this->ui->myGLWidget->_velodyneReflectance = kittiData.tmpref;
 
     }
 
@@ -126,4 +134,11 @@ void window::load_data()
 void window::clear_left_img123()
 {
 
+}
+
+void window::on_stepButton_clicked()
+{
+    ui->lineEdit->setText("Image path: " + leftImgPath);
+
+    load_data();
 }

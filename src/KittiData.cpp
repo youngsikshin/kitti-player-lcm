@@ -91,19 +91,18 @@ void KittiData::read_velodyne(QString fname)
     }
 
 
-    int n_vl = _velodyneData.size();
-    int step = _velodyneData.size()/64;
-    tmpdata.clear();
-    tmpref.clear();
+//    int n_vl = _velodyneData.size();
+//    int step = _velodyneData.size()/64;
+//    tmpdata.clear();
+//    tmpref.clear();
 
-    std::cout << n_vl << std::endl;
-    for(int i=0; i<64;i=i+4) {
-        for(int j=0; j<step; j++) {
-
-                tmpdata.push_back(_velodyneData[i*step+j]);
-                tmpref.push_back(_velodyneReflectance[i*step+j]);
-        }
-    }
+//    std::cout << n_vl << std::endl;
+//    for(int i=0; i<64;i=i+4) {
+//        for(int j=0; j<step; j++) {
+//                tmpdata.push_back(_velodyneData[i*step+j]);
+//                tmpref.push_back(_velodyneReflectance[i*step+j]);
+//        }
+//    }
 
 
 
