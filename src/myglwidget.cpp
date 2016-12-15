@@ -123,6 +123,7 @@ void MyGLWidget::paintGL()
     drawShader(shaderProgram, GL_LINES, T, grid, Qt::darkGray);
     glLineWidth(3);
     drawShader(shaderProgramColor, GL_LINES, T, axes, axes_color);
+
     drawShader(shaderProgramColor, GL_POINTS, T, _velodyneData, _velodyneReflectance, 1);
 
     glFlush();

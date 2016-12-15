@@ -76,10 +76,12 @@ void KittiData::read_velodyne(QString fname)
         in.setByteOrder(QDataStream::LittleEndian);
         in.setFloatingPointPrecision(QDataStream::SinglePrecision);
         double x, y, z, r;
+
+        in >> x >> y >> z >> r;
+
         double angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180.0/M_PI;
 //        std::cout << angle << std::endl;
 //        std::cout << floor(angle*10+0.5)/10 << std::endl;
-        in >> x >> y >> z >> r;
 
         _velodyneData.push_back(x);
         _velodyneData.push_back(y);
@@ -90,19 +92,21 @@ void KittiData::read_velodyne(QString fname)
 //        std::cout << x << ", " << y << ", " << z << ", " << r << std::endl;
     }
 
+//    std::cout << _velodyneData.size()/3 << std::endl;
 
-//    int n_vl = _velodyneData.size();
-//    int step = _velodyneData.size()/64;
-//    tmpdata.clear();
-//    tmpref.clear();
 
-//    std::cout << n_vl << std::endl;
-//    for(int i=0; i<64;i=i+4) {
-//        for(int j=0; j<step; j++) {
-//                tmpdata.push_back(_velodyneData[i*step+j]);
-//                tmpref.push_back(_velodyneReflectance[i*step+j]);
-//        }
-//    }
+    int n_vl = _velodyneData.size();
+    int step = _velodyneData.size()/64;
+    tmpdata.clear();
+    tmpref.clear();
+
+    std::cout << n_vl << std::endl;
+    for(int i=0; i<64;i=i+4) {
+        for(int j=0; j<step; j++) {
+                tmpdata.push_back(_velodyneData[i*step+j]);
+                tmpref.push_back(_velodyneReflectance[i*step+j]);
+        }
+    }
 
 
 

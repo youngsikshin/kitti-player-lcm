@@ -115,10 +115,10 @@ void window::load_data()
 
     if(ui->vlpCheckBox->isChecked()) {
 
-        this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
-        this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
-//        this->ui->myGLWidget->_velodyneData = kittiData.tmpdata;
-//        this->ui->myGLWidget->_velodyneReflectance = kittiData.tmpref;
+//        this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
+//        this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
+        this->ui->myGLWidget->_velodyneData = kittiData.tmpdata;
+        this->ui->myGLWidget->_velodyneReflectance = kittiData.tmpref;
 
     }
 
@@ -129,6 +129,7 @@ void window::load_data()
 
 //    _timer->start(delay_msec-timer.elapsed());
     this->ui->myGLWidget->update();
+
 }
 
 void window::clear_left_img123()
