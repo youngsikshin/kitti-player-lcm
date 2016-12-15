@@ -24,8 +24,8 @@ public:
     QVector<GLfloat> _velodyneData;
     QVector<GLfloat> _velodyneReflectance;
 
-    QVector<GLfloat> tmpdata;
-    QVector<GLfloat> tmpref;
+    QVector<QVector<GLfloat>> _velodyneLayerData;
+    QVector<QVector<GLfloat>> _velodyneLayerReflectance;
 
 
     QImage _leftImg;

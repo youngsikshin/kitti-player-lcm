@@ -126,7 +126,7 @@ void MyGLWidget::paintGL()
 
     drawShader(shaderProgramColor, GL_POINTS, T, _velodyneData, _velodyneReflectance, 1);
 
-    glFlush();
+//    glFlush();
 }
 
 void MyGLWidget::drawShader(QGLShaderProgram &shader, GLenum type, QMatrix4x4 T, QVector<QVector3D> data, Qt::GlobalColor color)

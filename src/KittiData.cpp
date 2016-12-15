@@ -71,7 +71,16 @@ void KittiData::read_velodyne(QString fname)
     _velodyneData.clear();
     _velodyneReflectance.clear();
 
+    _velodyneLayerData.clear();
+    _velodyneLayerReflectance.clear();
+
     int cnt=0;
+
+    bool init_azimuth = false;
+    double prev_azimuth;
+    QVector<GLfloat> singleLayerData;
+    QVector<GLfloat> singleLayerReflectance;
+
     while(!in.atEnd()) {
         in.setByteOrder(QDataStream::LittleEndian);
         in.setFloatingPointPrecision(QDataStream::SinglePrecision);
@@ -79,9 +88,31 @@ void KittiData::read_velodyne(QString fname)
 
         in >> x >> y >> z >> r;
 
-        double angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180.0/M_PI;
-//        std::cout << angle << std::endl;
-//        std::cout << floor(angle*10+0.5)/10 << std::endl;
+//        double angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180.0/M_PI;
+        double azimuth = atan2(static_cast<double> (y), static_cast<double>(x));
+        azimuth = (azimuth > 0 ? azimuth : (2*M_PI + azimuth));
+
+        if (!init_azimuth) {
+            prev_azimuth = azimuth;
+            init_azimuth = true;
+        }
+        else {
+            if((azimuth - prev_azimuth) < -0.2) {
+//                std::cout << azimuth << " - " << prev_azimuth << " = " << azimuth - prev_azimuth << std::endl;
+                _velodyneLayerData.push_back(singleLayerData);
+                _velodyneLayerReflectance.push_back(singleLayerReflectance);
+                singleLayerData.clear();
+                singleLayerReflectance.clear();
+            }
+            prev_azimuth = azimuth;
+        }
+
+        singleLayerData.push_back(x);
+        singleLayerData.push_back(y);
+        singleLayerData.push_back(z);
+        singleLayerReflectance.push_back(r);
+        singleLayerReflectance.push_back(r);
+        singleLayerReflectance.push_back(r);
 
         _velodyneData.push_back(x);
         _velodyneData.push_back(y);
@@ -89,26 +120,12 @@ void KittiData::read_velodyne(QString fname)
         _velodyneReflectance.push_back(r);
         _velodyneReflectance.push_back(r);
         _velodyneReflectance.push_back(r);
-//        std::cout << x << ", " << y << ", " << z << ", " << r << std::endl;
+
     }
 
-//    std::cout << _velodyneData.size()/3 << std::endl;
+    _velodyneLayerData.push_back(singleLayerData);
+    _velodyneLayerReflectance.push_back(singleLayerReflectance);
+    singleLayerData.clear();
+    singleLayerReflectance.clear();
 
-
-    int n_vl = _velodyneData.size();
-    int step = _velodyneData.size()/64;
-    tmpdata.clear();
-    tmpref.clear();
-
-    std::cout << n_vl << std::endl;
-    for(int i=0; i<64;i=i+4) {
-        for(int j=0; j<step; j++) {
-                tmpdata.push_back(_velodyneData[i*step+j]);
-                tmpref.push_back(_velodyneReflectance[i*step+j]);
-        }
-    }
-
-
-
-//    std::cout << std::endl;
 }

@@ -113,12 +113,21 @@ void window::load_data()
     // Read velodyne data
     kittiData.read_velodyne(velodynePath);
 
+
+    this->ui->myGLWidget->_velodyneData.clear();
+    this->ui->myGLWidget->_velodyneReflectance.clear();
+
     if(ui->vlpCheckBox->isChecked()) {
 
 //        this->ui->myGLWidget->_velodyneData = kittiData._velodyneData;
 //        this->ui->myGLWidget->_velodyneReflectance = kittiData._velodyneReflectance;
-        this->ui->myGLWidget->_velodyneData = kittiData.tmpdata;
-        this->ui->myGLWidget->_velodyneReflectance = kittiData.tmpref;
+
+        int cnt = 0;
+        for (int i=0; i<kittiData._velodyneLayerData.size(); i=i+4) {
+            this->ui->myGLWidget->_velodyneData << kittiData._velodyneLayerData[i];
+            this->ui->myGLWidget->_velodyneReflectance << kittiData._velodyneLayerReflectance[i];
+            std::cout << ++cnt << std::endl;
+        }
 
     }
 
