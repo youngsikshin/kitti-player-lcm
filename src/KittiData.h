@@ -7,12 +7,21 @@
 #include <QtOpenGL>
 #include <vector>
 
+enum VelodyneLayer {
+    Layer16,
+    Layer64
+};
+
 class KittiData
 {
 public:
     KittiData();
     KittiData(QString path);
     ~KittiData();
+
+    int get_velodyne_layer() { return velodyneLayer; }
+    void set_velodyne_layer(VelodyneLayer layer) { velodyneLayer = layer; }
+
     int get_num_of_frame() { return _times.size(); }
     QString get_left_img(int i) { return _flistLeftImg.at(i).absoluteFilePath(); }
     QString get_right_img(int i) { return _flistRightImg.at(i).absoluteFilePath(); }
@@ -27,7 +36,6 @@ public:
     QVector<QVector<GLfloat>> _velodyneLayerData;
     QVector<QVector<GLfloat>> _velodyneLayerReflectance;
 
-
     QImage _leftImg;
     QImage _rightImg;
 
@@ -39,6 +47,8 @@ private:
     QFileInfoList _flistLeftImg;
     QFileInfoList _flistRightImg;
     QFileInfoList _flistVelodyne;
+
+    VelodyneLayer velodyneLayer;
 
     QVector<double> _times;
 

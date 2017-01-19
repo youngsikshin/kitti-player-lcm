@@ -22,6 +22,8 @@ KittiData::KittiData(QString path)
     _flistRightImg = get_filelist(_rightImgPath,"*.png");
     _flistVelodyne = get_filelist(_velodynePath,"*.bin");
 
+    velodyneLayer = Layer64;
+
     QFile _ftimes(path+"times.txt");
     if (!_ftimes.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
@@ -88,44 +90,59 @@ void KittiData::read_velodyne(QString fname)
 
         in >> x >> y >> z >> r;
 
-//        double angle = atan2(static_cast<double> (z), static_cast<double> (sqrt(x*x+y*y)))*180.0/M_PI;
-        double azimuth = atan2(static_cast<double> (y), static_cast<double>(x));
-        azimuth = (azimuth > 0 ? azimuth : (2*M_PI + azimuth));
+        if (velodyneLayer == Layer16) {
+            double azimuth = atan2(static_cast<double> (y), static_cast<double>(x));
+            azimuth = (azimuth > 0 ? azimuth : (2*M_PI + azimuth));
 
-        if (!init_azimuth) {
-            prev_azimuth = azimuth;
-            init_azimuth = true;
-        }
-        else {
-            if((azimuth - prev_azimuth) < -0.2) {
-//                std::cout << azimuth << " - " << prev_azimuth << " = " << azimuth - prev_azimuth << std::endl;
-                _velodyneLayerData.push_back(singleLayerData);
-                _velodyneLayerReflectance.push_back(singleLayerReflectance);
-                singleLayerData.clear();
-                singleLayerReflectance.clear();
+            if (!init_azimuth) {
+                prev_azimuth = azimuth;
+                init_azimuth = true;
             }
-            prev_azimuth = azimuth;
+            else {
+                if((azimuth - prev_azimuth) < -0.2) {
+                    _velodyneLayerData.push_back(singleLayerData);
+                    _velodyneLayerReflectance.push_back(singleLayerReflectance);
+                    singleLayerData.clear();
+                    singleLayerReflectance.clear();
+                }
+                prev_azimuth = azimuth;
+            }
+
+            singleLayerData.push_back(x);
+            singleLayerData.push_back(y);
+            singleLayerData.push_back(z);
+            singleLayerReflectance.push_back(r);
+            singleLayerReflectance.push_back(r);
+            singleLayerReflectance.push_back(r);
+
+            _velodyneData.push_back(x);
+            _velodyneData.push_back(y);
+            _velodyneData.push_back(z);
+            _velodyneReflectance.push_back(r);
+            _velodyneReflectance.push_back(r);
+            _velodyneReflectance.push_back(r);
         }
+        else if (velodyneLayer == Layer64){
+            singleLayerData.push_back(x);
+            singleLayerData.push_back(y);
+            singleLayerData.push_back(z);
+            singleLayerReflectance.push_back(r);
+            singleLayerReflectance.push_back(r);
+            singleLayerReflectance.push_back(r);
 
-        singleLayerData.push_back(x);
-        singleLayerData.push_back(y);
-        singleLayerData.push_back(z);
-        singleLayerReflectance.push_back(r);
-        singleLayerReflectance.push_back(r);
-        singleLayerReflectance.push_back(r);
-
-        _velodyneData.push_back(x);
-        _velodyneData.push_back(y);
-        _velodyneData.push_back(z);
-        _velodyneReflectance.push_back(r);
-        _velodyneReflectance.push_back(r);
-        _velodyneReflectance.push_back(r);
+            _velodyneData.push_back(x);
+            _velodyneData.push_back(y);
+            _velodyneData.push_back(z);
+            _velodyneReflectance.push_back(r);
+            _velodyneReflectance.push_back(r);
+            _velodyneReflectance.push_back(r);
+        }
 
     }
 
     _velodyneLayerData.push_back(singleLayerData);
     _velodyneLayerReflectance.push_back(singleLayerReflectance);
+
     singleLayerData.clear();
     singleLayerReflectance.clear();
-
 }

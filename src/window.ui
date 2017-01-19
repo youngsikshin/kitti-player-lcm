@@ -139,6 +139,34 @@
         </layout>
        </item>
        <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Velodyne Control</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="layerSelector1">
+         <property name="text">
+          <string>64 Layer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="layerSelector2">
+         <property name="text">
+          <string>16 Layer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="vlpCheckBox">
+         <property name="text">
+          <string>Draw Velodyne</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
           <widget class="QPushButton" name="startButton">
@@ -160,13 +188,6 @@
         <widget class="QPushButton" name="stopButton">
          <property name="text">
           <string>Stop</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="vlpCheckBox">
-         <property name="text">
-          <string>Velodyne</string>
          </property>
         </widget>
        </item>

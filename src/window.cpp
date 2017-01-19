@@ -27,7 +27,11 @@ window::window(QWidget *parent) :
 
     strSeq = ui->comboBox->currentText();
     QString seqPath = "/var/data/kitti/dataset/sequences/"+strSeq+"/";
+
+    ui->layerSelector1->setChecked(true);
+
     kittiData = KittiData(seqPath);
+    kittiData.set_velodyne_layer(Layer64);
 }
 
 window::~window()
@@ -91,6 +95,8 @@ void window::load_data()
 {
 //    QElapsedTimer timer;
 //    timer.start();
+    if(ui->layerSelector1->isChecked()) kittiData.set_velodyne_layer(Layer64);
+    if(ui->layerSelector2->isChecked()) kittiData.set_velodyne_layer(Layer16);
 
     leftImgPath = kittiData.get_left_img(i);
     rightImgPath = kittiData.get_right_img(i);
@@ -112,7 +118,6 @@ void window::load_data()
 
     // Read velodyne data
     kittiData.read_velodyne(velodynePath);
-
 
     this->ui->myGLWidget->_velodyneData.clear();
     this->ui->myGLWidget->_velodyneReflectance.clear();
