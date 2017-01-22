@@ -73,9 +73,6 @@ void KittiData::read_velodyne(QString fname)
     _velodyneData.clear();
     _velodyneReflectance.clear();
 
-    _velodyneLayerData.clear();
-    _velodyneLayerReflectance.clear();
-
     int cnt=0;
 
     bool init_azimuth = false;
@@ -100,8 +97,11 @@ void KittiData::read_velodyne(QString fname)
             }
             else {
                 if((azimuth - prev_azimuth) < -0.2) {
-                    _velodyneLayerData.push_back(singleLayerData);
-                    _velodyneLayerReflectance.push_back(singleLayerReflectance);
+                    if(cnt%4 == 0) {
+                        insert_QVector(_velodyneData, singleLayerData);
+                        insert_QVector(_velodyneReflectance, singleLayerReflectance);
+                    }
+                    cnt++;
                     singleLayerData.clear();
                     singleLayerReflectance.clear();
                 }
@@ -114,22 +114,8 @@ void KittiData::read_velodyne(QString fname)
             singleLayerReflectance.push_back(r);
             singleLayerReflectance.push_back(r);
             singleLayerReflectance.push_back(r);
-
-            _velodyneData.push_back(x);
-            _velodyneData.push_back(y);
-            _velodyneData.push_back(z);
-            _velodyneReflectance.push_back(r);
-            _velodyneReflectance.push_back(r);
-            _velodyneReflectance.push_back(r);
         }
         else if (velodyneLayer == Layer64){
-            singleLayerData.push_back(x);
-            singleLayerData.push_back(y);
-            singleLayerData.push_back(z);
-            singleLayerReflectance.push_back(r);
-            singleLayerReflectance.push_back(r);
-            singleLayerReflectance.push_back(r);
-
             _velodyneData.push_back(x);
             _velodyneData.push_back(y);
             _velodyneData.push_back(z);
@@ -140,9 +126,18 @@ void KittiData::read_velodyne(QString fname)
 
     }
 
-    _velodyneLayerData.push_back(singleLayerData);
-    _velodyneLayerReflectance.push_back(singleLayerReflectance);
+    if (velodyneLayer == Layer16 && cnt%4 == 0) {
+        insert_QVector(_velodyneData, singleLayerData);
+        insert_QVector(_velodyneReflectance, singleLayerReflectance);
+    }
 
     singleLayerData.clear();
     singleLayerReflectance.clear();
+}
+
+void KittiData::insert_QVector(QVector<GLfloat>& dst, const QVector<GLfloat>& src)
+{
+    for(int i=0; i<src.size(); i++) {
+        dst.push_back(src[i]);;
+    }
 }

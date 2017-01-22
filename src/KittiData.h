@@ -33,9 +33,6 @@ public:
     QVector<GLfloat> _velodyneData;
     QVector<GLfloat> _velodyneReflectance;
 
-    QVector<QVector<GLfloat>> _velodyneLayerData;
-    QVector<QVector<GLfloat>> _velodyneLayerReflectance;
-
     QImage _leftImg;
     QImage _rightImg;
 
@@ -54,6 +51,8 @@ private:
 
     QFileInfoList get_filelist(const QString path, const QString name_filter);
     void print_filelist(const QFileInfoList flist);
+
+    void insert_QVector(QVector<GLfloat>& dst, const QVector<GLfloat>& src);
 };
 
 #endif // KITTIDATA_H
