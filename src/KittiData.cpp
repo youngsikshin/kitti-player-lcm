@@ -12,11 +12,12 @@ KittiData::KittiData()
 
 }
 
-KittiData::KittiData(QString path)
+KittiData::KittiData(QString path, QString gtFname)
 {
     _leftImgPath = path+"image_0";
     _rightImgPath = path+"image_1";
     _velodynePath = path+"velodyne";
+    _gtFname = gtFname;
 
     _flistLeftImg = get_filelist(_leftImgPath, "*.png");
     _flistRightImg = get_filelist(_rightImgPath,"*.png");
@@ -24,14 +25,33 @@ KittiData::KittiData(QString path)
 
     velodyneLayer = Layer64;
 
+    // Read times.txt
     QFile _ftimes(path+"times.txt");
     if (!_ftimes.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
-    QTextStream in(&_ftimes);
-    while (!in.atEnd()) {
-        QString line = in.readLine();
+    QTextStream timesIn(&_ftimes);
+    while (!timesIn.atEnd()) {
+        QString line = timesIn.readLine();
         _times.push_back(line.toDouble());
+    }
+
+    // Read GT poses
+    QFile _gtPoses(_gtFname);
+    if (!_gtPoses.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream posesIn(&_gtPoses);
+    while (!posesIn.atEnd()) {
+        QString line = posesIn.readLine();
+        QStringList list = line.split(" ");
+        QMatrix4x4 Tgt(list[0].toDouble(), list[1].toDouble(), list[2].toDouble(), list[3].toDouble(),
+                       list[4].toDouble(), list[5].toDouble(), list[6].toDouble(), list[7].toDouble(),
+                       list[8].toDouble(), list[9].toDouble(), list[10].toDouble(), list[11].toDouble(),
+                       0,    0,    0,    1);
+        _poses.push_back(Tgt);
+
+//        qDebug() << Tgt << endl;
     }
 }
 

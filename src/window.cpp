@@ -27,10 +27,11 @@ window::window(QWidget *parent) :
 
     strSeq = ui->comboBox->currentText();
     QString seqPath = "/var/data/kitti/dataset/sequences/"+strSeq+"/";
+    QString gtFname = "/var/data/kitti/dataset/poses/"+strSeq+".txt";
 
     ui->layerSelector1->setChecked(true);
 
-    kittiData = KittiData(seqPath);
+    kittiData = KittiData(seqPath, gtFname);
     kittiData.set_velodyne_layer(Layer64);
 }
 
@@ -58,7 +59,8 @@ void window::on_comboBox_currentIndexChanged(int index)
     ui->lineEdit->setText("Sequence " + ui->comboBox->currentText() + ". ");
     strSeq = ui->comboBox->currentText();
     QString seqPath = "/var/data/kitti/dataset/sequences/"+strSeq+"/";
-    kittiData = KittiData(seqPath);
+    QString gtFname = "/var/data/kitti/dataset/poses/"+strSeq+".txt";
+    kittiData = KittiData(seqPath, gtFname);
 
     init_index();
 }
@@ -101,6 +103,7 @@ void window::load_data()
     leftImgPath = kittiData.get_left_img(i);
     rightImgPath = kittiData.get_right_img(i);
     velodynePath = kittiData.get_velodyne(i);
+    Tgt = kittiData.get_poses(i);
 
 //    delay_msec = static_cast<int> (kittiData.get_time_diff(i)*1000);
 //    _timer->start(delay_msec);
@@ -134,6 +137,9 @@ void window::load_data()
 //        }
 
     }
+
+    // Read Poses
+    this->ui->myGLWidget->Tgt = Tgt;
 
     lcmThread->set_left_img(&kittiData._leftImg);
     lcmThread->set_right_img(&kittiData._rightImg);

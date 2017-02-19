@@ -42,6 +42,10 @@ public:
     QVector<GLfloat> _velodyneData;
     QVector<GLfloat> _velodyneReflectance;
 
+    QVector<QVector3D> _initFovPyramid;
+    QVector<QVector3D> _curFovPyramid;
+    QMatrix4x4 Tgt;
+
 public slots:
     // slots for xyz-rotation slider
     void setXRotation(int angle);
@@ -57,6 +61,7 @@ signals:
 
 private:
     void draw();
+    void tfFovPyramid(QMatrix4x4 tf);
 
     int xRot;
     int yRot;
@@ -70,7 +75,6 @@ private:
     QVector3D cameraPosition;
     QVector3D cameraFront;
     QVector3D cameraUpDirection;
-
 };
 
 #endif // MYGLWIDGET_H

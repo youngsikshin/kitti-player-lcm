@@ -19,6 +19,15 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     cameraFront = QVector3D(0, 0, -1);
     cameraUpDirection = QVector3D(0, 1, 0);
 
+    float a = 0.75;
+    float b = 0.75;
+    float c = 0.5;
+
+    _initFovPyramid << QVector3D(0, 0, 0) << QVector3D(a, -b, c) << QVector3D(a, b, c)
+                    << QVector3D(0, 0, 0) << QVector3D(a, b, c) << QVector3D(-a, b, c)
+                    << QVector3D(0, 0, 0) << QVector3D(-a, b, c) << QVector3D(-a, -b, c)
+                    << QVector3D(0, 0, 0) << QVector3D(-a, -b, c) << QVector3D(a, -b, c);
+
     setFocusPolicy(Qt::StrongFocus);
 }
 
@@ -120,7 +129,9 @@ void MyGLWidget::paintGL()
     QMatrix4x4 T = pMatrix * vMatrix * mMatrix;
 
     glLineWidth(1);
-    drawShader(shaderProgram, GL_LINES, T, grid, Qt::darkGray);
+    drawShader(shaderProgram, GL_LINES, T, grid, Qt::gray);
+//    tfFovPyramid(Tgt);
+//    drawShader(shaderProgram, GL_LINE_STRIP, T, _curFovPyramid, Qt::cyan);
     glLineWidth(3);
     drawShader(shaderProgramColor, GL_LINES, T, axes, axes_color);
 
@@ -336,4 +347,12 @@ void MyGLWidget::draw()
 //        glVertex3f(-1,-1,0);
 //        glVertex3f(0,0,1.2);
 //    glEnd();
+}
+
+void MyGLWidget::tfFovPyramid(QMatrix4x4 tf)
+{
+    _curFovPyramid.clear();
+    for(int i=0; i < _initFovPyramid.size(); i++) {
+        _curFovPyramid.push_back(tf*_initFovPyramid[i]);
+    }
 }

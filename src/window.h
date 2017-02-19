@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QPixmap>
 #include <QMutex>
+#include <QMatrix4x4>
 #include "KittiData.h"
 #include "LCMThread.h"
 
@@ -53,6 +54,8 @@ private:
     QPixmap leftImg;
     QPixmap rightImg;
     int i=0;
+
+    QMatrix4x4 Tgt;
 
     void init_index();
     void load_data();
